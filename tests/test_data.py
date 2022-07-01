@@ -51,3 +51,4 @@ EXPECTED_OUTPUT = [
 ]
 
 ERROR_FP = os.path.abspath('tests/errors.csv')
+CUSTOMERS_FP = os.path.abspath('tests/customers.csv')

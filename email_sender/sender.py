@@ -3,7 +3,7 @@ import re
 
 from pathlib import Path
 from datetime import datetime
-from .utils import dict_to_csv
+from .utils import json_to_csv
 
 
 class EmailSender:
@@ -77,4 +77,4 @@ class EmailSenderViaFile(EmailSender):
             json.dump(email_obj, fn.open('w'), indent=2)
 
         if self.invalid_customers:
-            dict_to_csv(self.invalid_customers, self.error_fp)
+            json_to_csv(self.invalid_customers, self.error_fp)
