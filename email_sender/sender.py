@@ -3,6 +3,7 @@ import re
 
 from pathlib import Path
 from datetime import datetime
+from .utils import dict_to_csv
 
 
 class EmailSender:
@@ -10,6 +11,7 @@ class EmailSender:
         self.template = template
         self.customers = customers
         self.email_objs = []
+        self.invalid_customers = []
 
         self.__generate_email_objs()
 
@@ -18,6 +20,9 @@ class EmailSender:
         email_objs = []
 
         for customer in self.customers:
+            if not customer['EMAIL']:
+                self.invalid_customers.append(customer)
+                continue
             email_obj = self.template.copy()
             email_obj['to'] = customer['EMAIL']
 
@@ -57,15 +62,19 @@ class EmailSender:
 
 
 class EmailSenderViaFile(EmailSender):
-    def __init__(self, template, customers, output_dir):
+    def __init__(self, template, customers, output_dir, error_fp):
         super().__init__(template, customers)
 
         if not Path(output_dir).exists():
             Path(output_dir).mkdir(parents=True)
         self.output_dir = output_dir
+        self.error_fp = error_fp
 
     def send_email(self):
         for email_obj in self._get_email_objs():
             recipient = email_obj['to']
             fn = Path(self.output_dir) / f'{recipient}.json'
             json.dump(email_obj, fn.open('w'), indent=2)
+
+        if self.invalid_customers:
+            dict_to_csv(self.invalid_customers, self.error_fp)
