@@ -1,6 +1,6 @@
 
 from email_sender.sender import EmailSenderViaFile
-from test_data import TEMPLATE, CUSTOMERS, EXPECTED_OUTPUT, CUSTOMER_WITH_EMPTY_EMAIL, ERROR_FP
+from test_variables import TEMPLATE, CUSTOMERS, EXPECTED_OUTPUT, CUSTOMER_WITH_EMPTY_EMAIL, ERROR_FP
 import json
 import filecmp
 

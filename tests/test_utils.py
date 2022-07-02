@@ -1,5 +1,5 @@
 from email_sender.utils import json_to_csv, csv_to_json
-from test_data import CUSTOMERS, CUSTOMERS_FP, CUSTOMER_WITH_EMPTY_EMAIL, CUSTOMERS_WITH_EMPTY_EMAIL_FP
+from test_variables import CUSTOMERS, CUSTOMERS_FP, CUSTOMER_WITH_EMPTY_EMAIL, CUSTOMERS_WITH_EMPTY_EMAIL_FP
 import filecmp
 
 
