@@ -23,6 +23,7 @@ class EmailSender:
             if not customer['EMAIL']:
                 self.invalid_customers.append(customer)
                 continue
+
             email_obj = self.template.copy()
             email_obj['to'] = customer['EMAIL']
 

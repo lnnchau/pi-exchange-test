@@ -1,15 +1,14 @@
-
 from pathlib import Path
-from email_sender.sender import EmailSenderViaFile
-from test_variables import TEMPLATE, CUSTOMERS, EXPECTED_OUTPUT, CUSTOMER_WITH_EMPTY_EMAIL, ERROR_FP
+from test_variables import CUSTOMERS_FP, CUSTOMERS_WITH_EMPTY_EMAIL_FP, EXPECTED_OUTPUT, TEMPLATE_FP, ERROR_FP
+import subprocess
 import json
 import filecmp
 
 
-def test_sender(tmp_path):
-    sender = EmailSenderViaFile(
-        TEMPLATE, CUSTOMERS, tmp_path, tmp_path / 'errors.csv')
-    sender.send_email()
+def test_cli(tmp_path):
+    command = ["python3", "cli.py", TEMPLATE_FP,
+               CUSTOMERS_FP, tmp_path, tmp_path / 'errors.csv']
+    subprocess.run(command)
 
     for output in EXPECTED_OUTPUT:
         recipient = output['to']
@@ -26,14 +25,12 @@ def test_sender(tmp_path):
     assert Path(tmp_path / 'errors.csv').exists() is False
 
 
-def test_sender_with_empty_email(tmp_path):
+def test_cli_w_invalid_case(tmp_path):
     expected_error_file = tmp_path / 'errors.csv'
+    command = ["python3", "cli.py", TEMPLATE_FP,
+               CUSTOMERS_WITH_EMPTY_EMAIL_FP, tmp_path, expected_error_file]
+    subprocess.run(command)
 
-    sender = EmailSenderViaFile(
-        TEMPLATE, CUSTOMERS + [CUSTOMER_WITH_EMPTY_EMAIL], tmp_path, expected_error_file)
-    sender.send_email()
-
-    # check if emails for valid customers are sent
     for output in EXPECTED_OUTPUT:
         recipient = output['to']
         expected_output_file = tmp_path / f'{recipient}.json'
@@ -45,12 +42,6 @@ def test_sender_with_empty_email(tmp_path):
 
         assert isinstance(email_obj, dict)
         assert email_obj == output
-
-    # check if email for invalid customer is not sent
-    invalid_recipient = CUSTOMER_WITH_EMPTY_EMAIL['EMAIL']
-    invalid_output_file = tmp_path / f'{invalid_recipient}.json'
-
-    assert invalid_output_file.exists() is False
 
     assert expected_error_file.exists()
     assert filecmp.cmp(str(expected_error_file), ERROR_FP)

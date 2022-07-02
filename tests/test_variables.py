@@ -53,3 +53,4 @@ EXPECTED_OUTPUT = [
 ERROR_FP = os.path.abspath('tests/data/errors.csv')
 CUSTOMERS_FP = os.path.abspath('tests/data/customers.csv')
 CUSTOMERS_WITH_EMPTY_EMAIL_FP = os.path.abspath('tests/data/customers_w_invalid.csv')
+TEMPLATE_FP = os.path.abspath('tests/data/template.json')
