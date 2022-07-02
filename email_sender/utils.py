@@ -5,7 +5,7 @@ def csv_to_json(fp):
     """
     Convert initial CSV file to JSON
     """
-    return pd.read_csv(fp).to_dict(orient='records')
+    return pd.read_csv(fp, keep_default_na=False).to_dict(orient='records')
 
 
 def json_to_csv(obj, fp):
