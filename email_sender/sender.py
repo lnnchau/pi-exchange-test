@@ -8,6 +8,25 @@ from .utils import json_to_csv
 
 class EmailSender:
     def __init__(self, template, customers):
+        """
+        Args:
+            template (dict): email template, should be the same with object in template.json
+            customers (list[dict]): list of customer infomation
+                example: [
+                    {
+                        "EMAIL": "john.smith@example.com",
+                        "TITLE": "Mr",
+                        "FIRST_NAME": "John",
+                        "LAST_NAME": "Smith"
+                    },
+                    {
+                        "EMAIL": "michelle.smith@example.com",
+                        "TITLE": "Mrs",
+                        "FIRST_NAME": "Michelle",
+                        "LAST_NAME": "Smith"
+                    },
+                ]
+        """
         self.template = template
         self.customers = customers
         self.email_objs = []
@@ -16,6 +35,8 @@ class EmailSender:
         self.__generate_email_objs()
 
     def __generate_email_objs(self):
+        """ Merge infomation of customers into template
+        """
         placeholders = re.findall(r'{{[A-Z\_]+}}', self.template['body'])
         email_objs = []
 
@@ -59,6 +80,8 @@ class EmailSender:
         self.email_objs = email_objs
 
     def send_email(self):
+        """ Implement methods to send an email
+        """
         pass
 
 
